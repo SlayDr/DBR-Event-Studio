@@ -138,87 +138,92 @@ export default function DBREventStudio() {
         <style>{`
           @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700&display=swap');
           *{box-sizing:border-box;margin:0;padding:0}
-          @media print{.no-print{display:none!important}}
+          @media print{
+            .no-print{display:none!important}
+            body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+            .prop-section{page-break-inside:avoid}
+          }
         `}</style>
 
-        {/* Back button */}
-        <button className="no-print" onClick={()=>setView("editor")}
-          style={{position:"fixed",top:16,left:16,zIndex:100,border:"none",borderRadius:20,padding:"8px 16px",background:C.burgundy,color:"#fff",fontFamily:"'Lato',sans-serif",fontSize:12,fontWeight:700,cursor:"pointer",boxShadow:"0 4px 16px rgba(107,26,42,.3)"}}>
-          ← Back to Editor
-        </button>
-        <button className="no-print" onClick={()=>window.print()}
-          style={{position:"fixed",top:16,right:16,zIndex:100,border:"none",borderRadius:20,padding:"8px 16px",background:C.roseGold,color:"#fff",fontFamily:"'Lato',sans-serif",fontSize:12,fontWeight:700,cursor:"pointer",boxShadow:"0 4px 16px rgba(201,149,106,.3)"}}>
-          🖨 Save as PDF
-        </button>
+        {/* Back / Print buttons */}
+        <div className="no-print" style={{position:"fixed",top:12,left:0,right:0,zIndex:100,display:"flex",justifyContent:"space-between",padding:"0 16px",pointerEvents:"none"}}>
+          <button onClick={()=>setView("editor")} style={{pointerEvents:"all",border:"none",borderRadius:20,padding:"8px 16px",background:C.burgundy,color:"#fff",fontFamily:"'Lato',sans-serif",fontSize:12,fontWeight:700,cursor:"pointer",boxShadow:"0 4px 16px rgba(107,26,42,.3)"}}>← Back to Editor</button>
+          <button onClick={()=>window.print()} style={{pointerEvents:"all",border:"none",borderRadius:20,padding:"8px 16px",background:C.roseGold,color:"#fff",fontFamily:"'Lato',sans-serif",fontSize:12,fontWeight:700,cursor:"pointer",boxShadow:"0 4px 16px rgba(201,149,106,.3)"}}>🖨 Save as PDF</button>
+        </div>
 
         {/* Hero Cover */}
-        <div style={{background:`linear-gradient(135deg, ${C.burgundyDark} 0%, ${C.burgundy} 50%, ${C.burgundyLight} 100%)`,padding:"80px 40px",textAlign:"center",position:"relative",overflow:"hidden"}}>
-          <div style={{position:"absolute",inset:0,opacity:.06,backgroundImage:"radial-gradient(circle at 20% 50%, #c9956a 0%, transparent 50%), radial-gradient(circle at 80% 20%, #e8c4a8 0%, transparent 40%)"}}/>
-          <img src={`data:image/jpeg;base64,${LOGO_B64}`} alt="DBR" style={{width:90,height:90,borderRadius:12,objectFit:"cover",marginBottom:24,boxShadow:"0 8px 32px rgba(0,0,0,.3)"}}/>
-          <div style={{fontSize:11,color:C.roseGoldLight,letterSpacing:4,textTransform:"uppercase",marginBottom:12,fontFamily:"'Lato',sans-serif"}}>Event Design Proposal</div>
-          <h1 style={{fontSize:48,fontWeight:700,color:"#fff",lineHeight:1.1,marginBottom:8}}>{prop.eventName}</h1>
-          <div style={{fontSize:20,color:C.roseGoldLight,fontStyle:"italic",marginBottom:24}}>Prepared exclusively for {prop.clientName}</div>
-          {prop.eventDate && <div style={{fontSize:14,color:"rgba(255,255,255,.6)",letterSpacing:2,fontFamily:"'Lato',sans-serif"}}>{prop.eventType} · {new Date(prop.eventDate+"T12:00:00").toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"})}</div>}
-          <div style={{width:60,height:2,background:C.roseGold,margin:"28px auto 0"}}/>
+        <div style={{background:`linear-gradient(135deg,${C.burgundyDark} 0%,${C.burgundy} 50%,${C.burgundyLight} 100%)`,padding:"60px 40px 48px",textAlign:"center",position:"relative",overflow:"hidden"}}>
+          <div style={{position:"absolute",inset:0,opacity:.06,backgroundImage:"radial-gradient(circle at 20% 50%,#c9956a 0%,transparent 50%)"}}/> 
+          <img src={`data:image/jpeg;base64,${LOGO_B64}`} alt="DBR" style={{width:80,height:80,borderRadius:12,objectFit:"cover",marginBottom:18,boxShadow:"0 8px 32px rgba(0,0,0,.3)"}}/>
+          <div style={{fontSize:11,color:C.roseGoldLight,letterSpacing:4,textTransform:"uppercase",marginBottom:10,fontFamily:"'Lato',sans-serif"}}>Event Design Proposal</div>
+          <h1 style={{fontSize:42,fontWeight:700,color:"#fff",lineHeight:1.1,marginBottom:6}}>{prop.eventName}</h1>
+          <div style={{fontSize:18,color:C.roseGoldLight,fontStyle:"italic",marginBottom:16}}>Prepared exclusively for {prop.clientName}</div>
+          {prop.eventDate&&<div style={{fontSize:13,color:"rgba(255,255,255,.6)",letterSpacing:2,fontFamily:"'Lato',sans-serif"}}>{prop.eventType} · {new Date(prop.eventDate+"T12:00:00").toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"})}</div>}
+          <div style={{width:50,height:2,background:C.roseGold,margin:"18px auto 0"}}/>
         </div>
 
         {/* Cover Note */}
-        {prop.coverNote && (
-          <div style={{maxWidth:700,margin:"0 auto",padding:"60px 40px 20px",textAlign:"center"}}>
-            <div style={{fontSize:11,color:C.roseGold,letterSpacing:3,textTransform:"uppercase",marginBottom:16,fontFamily:"'Lato',sans-serif"}}>A Message For You</div>
-            <p style={{fontSize:22,fontStyle:"italic",lineHeight:1.8,color:C.text,fontWeight:300}}>{prop.coverNote}</p>
+        {prop.coverNote&&(
+          <div style={{maxWidth:720,margin:"0 auto",padding:"32px 36px 20px",textAlign:"center"}}>
+            <div style={{fontSize:11,color:C.roseGold,letterSpacing:3,textTransform:"uppercase",marginBottom:12,fontFamily:"'Lato',sans-serif"}}>A Message For You</div>
+            <p style={{fontSize:20,fontStyle:"italic",lineHeight:1.85,color:C.text,fontWeight:300}}>{prop.coverNote}</p>
           </div>
         )}
 
-        {/* Color Palette strip */}
-        {prop.colorPalette?.length > 0 && (
-          <div style={{maxWidth:800,margin:"40px auto 0",padding:"0 40px"}}>
-            <div style={{textAlign:"center",marginBottom:20}}>
-              <div style={{fontSize:11,color:C.roseGold,letterSpacing:3,textTransform:"uppercase",fontFamily:"'Lato',sans-serif"}}>Color Story</div>
-            </div>
-            <div style={{display:"flex",justifyContent:"center",gap:12}}>
+        {/* Color Story */}
+        {prop.colorPalette?.length>0&&(
+          <div style={{maxWidth:800,margin:"24px auto 0",padding:"20px 36px",background:"#fff",borderTop:`1px solid ${C.border}`,borderBottom:`1px solid ${C.border}`}}>
+            <div style={{display:"flex",alignItems:"center",gap:28,flexWrap:"wrap",justifyContent:"center"}}>
+              <div style={{fontSize:12,color:C.roseGold,letterSpacing:3,textTransform:"uppercase",fontFamily:"'Lato',sans-serif",fontWeight:700,minWidth:80}}>Color Story</div>
               {prop.colorPalette.map((col,i)=>(
                 <div key={i} style={{textAlign:"center"}}>
-                  <div style={{width:64,height:64,borderRadius:"50%",background:col,boxShadow:"0 4px 16px rgba(0,0,0,.15)",border:"3px solid #fff"}}/>
-                  <div style={{fontSize:10,color:C.muted,marginTop:6,fontFamily:"'Lato',sans-serif"}}>{col}</div>
+                  <div style={{width:52,height:52,borderRadius:"50%",background:col,boxShadow:"0 3px 12px rgba(0,0,0,.18)",border:"3px solid #fff"}}/>
+                  <div style={{fontSize:11,color:C.muted,marginTop:5,fontFamily:"'Lato',sans-serif",fontWeight:600}}>{col}</div>
                 </div>
               ))}
             </div>
           </div>
         )}
 
-        {/* Sections */}
+        {/* Sections — 2-column image grid, compact headers */}
         {prop.sections.filter(s=>s.items.length>0).map((sec,si)=>(
-          <div key={sec.id} style={{maxWidth:1000,margin:"60px auto 0",padding:"0 40px"}}>
-            <div style={{textAlign:"center",marginBottom:32}}>
-              <div style={{fontSize:11,color:C.roseGold,letterSpacing:3,textTransform:"uppercase",fontFamily:"'Lato',sans-serif",marginBottom:8}}>{sec.icon} Section {si+1}</div>
-              <h2 style={{fontSize:36,fontWeight:600,color:C.burgundy}}>{sec.name}</h2>
-              <div style={{width:40,height:2,background:C.roseGold,margin:"12px auto 0"}}/>
+          <div key={sec.id} className="prop-section" style={{maxWidth:960,margin:"28px auto 0",padding:"0 32px"}}>
+            {/* Section header — compact */}
+            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16,paddingBottom:10,borderBottom:`1px solid ${C.border}`}}>
+              <span style={{fontSize:18}}>{sec.icon}</span>
+              <div>
+                <div style={{fontSize:10,color:C.roseGold,letterSpacing:3,textTransform:"uppercase",fontFamily:"'Lato',sans-serif",fontWeight:700}}>Section {si+1}</div>
+                <div style={{fontSize:26,fontWeight:600,color:C.burgundy,lineHeight:1.1}}>{sec.name}</div>
+              </div>
             </div>
 
             {/* Color swatches */}
-            {sec.items.some(i=>i.type==="color") && (
-              <div style={{display:"flex",flexWrap:"wrap",gap:20,justifyContent:"center",marginBottom:24}}>
+            {sec.items.some(i=>i.type==="color")&&(
+              <div style={{display:"flex",flexWrap:"wrap",gap:16,marginBottom:16}}>
                 {sec.items.filter(i=>i.type==="color").map(item=>(
                   <div key={item.id} style={{textAlign:"center"}}>
-                    <div style={{width:80,height:80,borderRadius:12,background:item.color,boxShadow:"0 4px 16px rgba(0,0,0,.12)",border:"3px solid #fff"}}/>
-                    <div style={{fontSize:13,fontWeight:600,color:C.text,marginTop:8}}>{item.label}</div>
-                    {item.note&&<div style={{fontSize:11,color:C.muted,fontStyle:"italic"}}>{item.note}</div>}
+                    <div style={{width:72,height:72,borderRadius:10,background:item.color,boxShadow:"0 4px 14px rgba(0,0,0,.14)",border:"3px solid #fff"}}/>
+                    <div style={{fontSize:15,fontWeight:700,color:C.text,marginTop:6}}>{item.label||"Color"}</div>
+                    {item.note&&<div style={{fontSize:13,color:C.muted,fontStyle:"italic",marginTop:2}}>{item.note}</div>}
                   </div>
                 ))}
               </div>
             )}
 
-            {/* Images — magazine grid */}
-            {sec.items.filter(i=>i.type==="image").length > 0 && (
-              <div style={{columns: sec.items.filter(i=>i.type==="image").length===1?"1":"2 300px",gap:16,marginBottom:16}}>
+            {/* Images — strict 2-column grid, fixed height so 2 rows fit per page */}
+            {sec.items.filter(i=>i.type==="image").length>0&&(
+              <div style={{
+                display:"grid",
+                gridTemplateColumns:sec.items.filter(i=>i.type==="image").length===1?"1fr":"1fr 1fr",
+                gap:14,marginBottom:8
+              }}>
                 {sec.items.filter(i=>i.type==="image").map(item=>(
-                  <div key={item.id} style={{breakInside:"avoid",marginBottom:16,borderRadius:12,overflow:"hidden",boxShadow:"0 8px 32px rgba(107,26,42,.12)"}}>
-                    <img src={item.src} alt={item.caption} style={{width:"100%",display:"block",objectFit:"cover"}}/>
-                    {(item.caption||item.note) && (
-                      <div style={{padding:"14px 16px",background:"#fff",borderTop:`2px solid ${C.roseGoldLight}`}}>
-                        {item.caption&&<div style={{fontSize:15,fontWeight:600,color:C.burgundy}}>{item.caption}</div>}
-                        {item.note&&<div style={{fontSize:13,color:C.muted,fontStyle:"italic",marginTop:4}}>{item.note}</div>}
+                  <div key={item.id} style={{borderRadius:10,overflow:"hidden",boxShadow:"0 4px 20px rgba(107,26,42,.1)",background:"#fff"}}>
+                    <img src={item.src} alt={item.caption||""} style={{width:"100%",height:260,display:"block",objectFit:"cover"}}/>
+                    {(item.caption||item.note)&&(
+                      <div style={{padding:"12px 14px",borderTop:`2px solid ${C.roseGoldLight}`}}>
+                        {item.caption&&<div style={{fontSize:17,fontWeight:700,color:C.burgundy,lineHeight:1.3}}>{item.caption}</div>}
+                        {item.note&&<div style={{fontSize:14,color:C.muted,fontStyle:"italic",marginTop:4,lineHeight:1.6}}>{item.note}</div>}
                       </div>
                     )}
                   </div>
@@ -229,24 +234,21 @@ export default function DBREventStudio() {
         ))}
 
         {/* Notes */}
-        {prop.notes && (
-          <div style={{maxWidth:700,margin:"60px auto 0",padding:"0 40px"}}>
-            <div style={{background:`${C.burgundy}10`,border:`1px solid ${C.roseGoldLight}`,borderLeft:`4px solid ${C.burgundy}`,borderRadius:10,padding:24}}>
-              <div style={{fontSize:11,color:C.burgundy,letterSpacing:3,textTransform:"uppercase",fontFamily:"'Lato',sans-serif",marginBottom:10}}>Important Notes</div>
-              <p style={{fontSize:15,lineHeight:1.8,color:C.text}}>{prop.notes}</p>
+        {prop.notes&&(
+          <div style={{maxWidth:720,margin:"28px auto 0",padding:"0 32px"}}>
+            <div style={{background:`${C.burgundy}10`,border:`1px solid ${C.roseGoldLight}`,borderLeft:`4px solid ${C.burgundy}`,borderRadius:10,padding:"18px 20px"}}>
+              <div style={{fontSize:12,color:C.burgundy,letterSpacing:2,textTransform:"uppercase",fontFamily:"'Lato',sans-serif",fontWeight:700,marginBottom:8}}>Important Notes</div>
+              <p style={{fontSize:16,lineHeight:1.85,color:C.text}}>{prop.notes}</p>
             </div>
           </div>
         )}
 
         {/* Footer */}
-        <div style={{textAlign:"center",padding:"60px 40px 40px",marginTop:60,borderTop:`1px solid ${C.border}`}}>
-          <img src={`data:image/jpeg;base64,${LOGO_B64}`} alt="DBR" style={{width:60,height:60,borderRadius:8,objectFit:"cover",marginBottom:16}}/>
-          <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:22,fontStyle:"italic",color:C.burgundy,marginBottom:8}}>
-            "We create elevated, unforgettable experiences for your most special moments."
-          </div>
-          <div style={{fontSize:11,color:C.muted,letterSpacing:2,textTransform:"uppercase",fontFamily:"'Lato',sans-serif",lineHeight:2}}>
-            designbyriahdbr@gmail.com &nbsp;|&nbsp; +1 (469) 728-9693<br/>
-            designbyriaheventstylist.carrd.co
+        <div style={{textAlign:"center",padding:"36px 40px 32px",marginTop:32,borderTop:`1px solid ${C.border}`}}>
+          <img src={`data:image/jpeg;base64,${LOGO_B64}`} alt="DBR" style={{width:52,height:52,borderRadius:8,objectFit:"cover",marginBottom:12}}/>
+          <div style={{fontSize:19,fontStyle:"italic",color:C.burgundy,marginBottom:6}}>"We create elevated, unforgettable experiences for your most special moments."</div>
+          <div style={{fontSize:12,color:C.muted,letterSpacing:2,textTransform:"uppercase",fontFamily:"'Lato',sans-serif",lineHeight:2.2}}>
+            designbyriahdbr@gmail.com &nbsp;|&nbsp; +1 (469) 728-9693 &nbsp;|&nbsp; designbyriaheventstylist.carrd.co
           </div>
         </div>
       </div>
