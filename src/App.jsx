@@ -138,10 +138,50 @@ export default function DBREventStudio() {
         <style>{`
           @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700&display=swap');
           *{box-sizing:border-box;margin:0;padding:0}
+          @page { size: A4; margin: 8mm 12mm; }
           @media print{
             .no-print{display:none!important}
             body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-            .prop-section{page-break-inside:avoid}
+            /* Hero - compact, no wasted space */
+            .prop-hero{padding:22px 28px 16px!important}
+            .prop-hero img{width:46px!important;height:46px!important;margin-bottom:8px!important}
+            .prop-hero h1{font-size:26px!important;margin-bottom:3px!important}
+            .prop-hero-sub{font-size:12px!important;margin-bottom:6px!important}
+            .prop-hero-date{font-size:9px!important}
+            .prop-hero-divider{margin-top:8px!important}
+            /* Cover note */
+            .prop-cover-note{padding:12px 24px 6px!important;max-width:100%!important}
+            .prop-cover-note p{font-size:12px!important;line-height:1.55!important}
+            .prop-cover-label{font-size:7.5px!important;margin-bottom:5px!important}
+            /* Color story */
+            .prop-color-strip{padding:8px 24px!important;margin-top:6px!important}
+            .prop-color-swatch{width:32px!important;height:32px!important}
+            .prop-color-hex{font-size:7.5px!important;margin-top:2px!important}
+            /* Sections - NO page-break-inside, let content flow naturally */
+            .prop-section{margin-top:10px!important;padding:0 20px!important;page-break-inside:auto!important}
+            .prop-section-header{margin-bottom:6px!important;padding-bottom:5px!important}
+            .prop-section-num{font-size:7.5px!important}
+            .prop-section-title{font-size:16px!important;line-height:1!important}
+            /* Images - smaller height so 2 rows fit per page */
+            .prop-img-grid{gap:6px!important;margin-bottom:4px!important;display:grid!important;grid-template-columns:1fr 1fr!important}
+            .prop-img-grid img{height:155px!important;object-fit:cover!important}
+            .prop-img-caption{padding:5px 7px!important}
+            .prop-img-cap-title{font-size:11px!important}
+            .prop-img-cap-note{font-size:9.5px!important;margin-top:1px!important;font-style:normal!important}
+            /* Color swatches */
+            .prop-swatches{gap:8px!important;margin-bottom:6px!important}
+            .prop-swatch-box{width:44px!important;height:44px!important;border-radius:8px!important}
+            .prop-swatch-label{font-size:11px!important;margin-top:3px!important}
+            /* Notes */
+            .prop-notes{margin-top:10px!important;padding:0 20px!important}
+            .prop-notes-box{padding:8px 10px!important}
+            .prop-notes-label{font-size:7.5px!important;margin-bottom:3px!important}
+            .prop-notes-text{font-size:10.5px!important;line-height:1.5!important}
+            /* Footer - tight */
+            .prop-footer{padding:12px 24px 10px!important;margin-top:10px!important}
+            .prop-footer img{width:32px!important;height:32px!important;margin-bottom:5px!important}
+            .prop-footer-quote{font-size:11px!important;margin-bottom:3px!important}
+            .prop-footer-contact{font-size:8.5px!important;line-height:1.8!important}
           }
         `}</style>
 
@@ -152,33 +192,33 @@ export default function DBREventStudio() {
         </div>
 
         {/* Hero Cover */}
-        <div style={{background:`linear-gradient(135deg,${C.burgundyDark} 0%,${C.burgundy} 50%,${C.burgundyLight} 100%)`,padding:"60px 40px 48px",textAlign:"center",position:"relative",overflow:"hidden"}}>
+        <div className="prop-hero" style={{background:`linear-gradient(135deg,${C.burgundyDark} 0%,${C.burgundy} 50%,${C.burgundyLight} 100%)`,padding:"60px 40px 48px",textAlign:"center",position:"relative",overflow:"hidden"}}>
           <div style={{position:"absolute",inset:0,opacity:.06,backgroundImage:"radial-gradient(circle at 20% 50%,#c9956a 0%,transparent 50%)"}}/> 
           <img src={`data:image/jpeg;base64,${LOGO_B64}`} alt="DBR" style={{width:80,height:80,borderRadius:12,objectFit:"cover",marginBottom:18,boxShadow:"0 8px 32px rgba(0,0,0,.3)"}}/>
           <div style={{fontSize:11,color:C.roseGoldLight,letterSpacing:4,textTransform:"uppercase",marginBottom:10,fontFamily:"'Lato',sans-serif"}}>Event Design Proposal</div>
           <h1 style={{fontSize:42,fontWeight:700,color:"#fff",lineHeight:1.1,marginBottom:6}}>{prop.eventName}</h1>
-          <div style={{fontSize:18,color:C.roseGoldLight,fontStyle:"italic",marginBottom:16}}>Prepared exclusively for {prop.clientName}</div>
-          {prop.eventDate&&<div style={{fontSize:13,color:"rgba(255,255,255,.6)",letterSpacing:2,fontFamily:"'Lato',sans-serif"}}>{prop.eventType} · {new Date(prop.eventDate+"T12:00:00").toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"})}</div>}
+          <div className="prop-hero-sub" style={{fontSize:18,color:C.roseGoldLight,fontStyle:"italic",marginBottom:16}}>Prepared exclusively for {prop.clientName}</div>
+          {prop.eventDate&&<div className="prop-hero-date" style={{fontSize:13,color:"rgba(255,255,255,.6)",letterSpacing:2,fontFamily:"'Lato',sans-serif"}}>{prop.eventType} · {new Date(prop.eventDate+"T12:00:00").toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"})}</div>}
           <div style={{width:50,height:2,background:C.roseGold,margin:"18px auto 0"}}/>
         </div>
 
         {/* Cover Note */}
         {prop.coverNote&&(
-          <div style={{maxWidth:720,margin:"0 auto",padding:"32px 36px 20px",textAlign:"center"}}>
+          <div className="prop-cover-note" style={{maxWidth:720,margin:"0 auto",padding:"32px 36px 20px",textAlign:"center"}}>
             <div style={{fontSize:11,color:C.roseGold,letterSpacing:3,textTransform:"uppercase",marginBottom:12,fontFamily:"'Lato',sans-serif"}}>A Message For You</div>
-            <p style={{fontSize:20,fontStyle:"italic",lineHeight:1.85,color:C.text,fontWeight:300}}>{prop.coverNote}</p>
+            <p style={{fontSize:18,lineHeight:1.85,color:C.text,fontWeight:400}}>{prop.coverNote}</p>
           </div>
         )}
 
         {/* Color Story */}
         {prop.colorPalette?.length>0&&(
-          <div style={{maxWidth:800,margin:"24px auto 0",padding:"20px 36px",background:"#fff",borderTop:`1px solid ${C.border}`,borderBottom:`1px solid ${C.border}`}}>
+          <div className="prop-color-strip" style={{maxWidth:800,margin:"24px auto 0",padding:"20px 36px",background:"#fff",borderTop:`1px solid ${C.border}`,borderBottom:`1px solid ${C.border}`}}>
             <div style={{display:"flex",alignItems:"center",gap:28,flexWrap:"wrap",justifyContent:"center"}}>
               <div style={{fontSize:12,color:C.roseGold,letterSpacing:3,textTransform:"uppercase",fontFamily:"'Lato',sans-serif",fontWeight:700,minWidth:80}}>Color Story</div>
               {prop.colorPalette.map((col,i)=>(
                 <div key={i} style={{textAlign:"center"}}>
-                  <div style={{width:52,height:52,borderRadius:"50%",background:col,boxShadow:"0 3px 12px rgba(0,0,0,.18)",border:"3px solid #fff"}}/>
-                  <div style={{fontSize:11,color:C.muted,marginTop:5,fontFamily:"'Lato',sans-serif",fontWeight:600}}>{col}</div>
+                  <div className="prop-color-swatch" style={{width:52,height:52,borderRadius:"50%",background:col,boxShadow:"0 3px 12px rgba(0,0,0,.18)",border:"3px solid #fff"}}/>
+                  <div className="prop-color-hex" style={{fontSize:11,color:"#3a2a1a",marginTop:5,fontFamily:"'Lato',sans-serif",fontWeight:600}}>{col}</div>
                 </div>
               ))}
             </div>
@@ -189,11 +229,11 @@ export default function DBREventStudio() {
         {prop.sections.filter(s=>s.items.length>0).map((sec,si)=>(
           <div key={sec.id} className="prop-section" style={{maxWidth:960,margin:"28px auto 0",padding:"0 32px"}}>
             {/* Section header — compact */}
-            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16,paddingBottom:10,borderBottom:`1px solid ${C.border}`}}>
+            <div className="prop-section-header" style={{display:"flex",alignItems:"center",gap:10,marginBottom:16,paddingBottom:10,borderBottom:`1px solid ${C.border}`}}>
               <span style={{fontSize:18}}>{sec.icon}</span>
               <div>
-                <div style={{fontSize:10,color:C.roseGold,letterSpacing:3,textTransform:"uppercase",fontFamily:"'Lato',sans-serif",fontWeight:700}}>Section {si+1}</div>
-                <div style={{fontSize:26,fontWeight:600,color:C.burgundy,lineHeight:1.1}}>{sec.name}</div>
+                <div style={{fontSize:11,color:C.burgundy,letterSpacing:0.5,textTransform:"uppercase",fontFamily:"'Lato',sans-serif",fontWeight:700}}>Section {si+1}</div>
+                <div className="prop-section-title" style={{fontSize:26,fontWeight:600,color:C.burgundy,lineHeight:1.1}}>{sec.name}</div>
               </div>
             </div>
 
@@ -204,7 +244,7 @@ export default function DBREventStudio() {
                   <div key={item.id} style={{textAlign:"center"}}>
                     <div style={{width:72,height:72,borderRadius:10,background:item.color,boxShadow:"0 4px 14px rgba(0,0,0,.14)",border:"3px solid #fff"}}/>
                     <div style={{fontSize:15,fontWeight:700,color:C.text,marginTop:6}}>{item.label||"Color"}</div>
-                    {item.note&&<div style={{fontSize:13,color:C.muted,fontStyle:"italic",marginTop:2}}>{item.note}</div>}
+                    {item.note&&<div style={{fontSize:13,color:"#4a2a1a",marginTop:2}}>{item.note}</div>}
                   </div>
                 ))}
               </div>
@@ -212,18 +252,18 @@ export default function DBREventStudio() {
 
             {/* Images — strict 2-column grid, fixed height so 2 rows fit per page */}
             {sec.items.filter(i=>i.type==="image").length>0&&(
-              <div style={{
+              <div className="prop-img-grid" style={{
                 display:"grid",
                 gridTemplateColumns:sec.items.filter(i=>i.type==="image").length===1?"1fr":"1fr 1fr",
                 gap:14,marginBottom:8
               }}>
                 {sec.items.filter(i=>i.type==="image").map(item=>(
                   <div key={item.id} style={{borderRadius:10,overflow:"hidden",boxShadow:"0 4px 20px rgba(107,26,42,.1)",background:"#fff"}}>
-                    <img src={item.src} alt={item.caption||""} style={{width:"100%",height:260,display:"block",objectFit:"cover"}}/>
+                    <img src={item.src} alt={item.caption||""} style={{width:"100%",height:260,display:"block",objectFit:"cover"}} className="prop-img"/>
                     {(item.caption||item.note)&&(
-                      <div style={{padding:"12px 14px",borderTop:`2px solid ${C.roseGoldLight}`}}>
-                        {item.caption&&<div style={{fontSize:17,fontWeight:700,color:C.burgundy,lineHeight:1.3}}>{item.caption}</div>}
-                        {item.note&&<div style={{fontSize:14,color:C.muted,fontStyle:"italic",marginTop:4,lineHeight:1.6}}>{item.note}</div>}
+                      <div className="prop-img-caption" style={{padding:"12px 14px",borderTop:`2px solid ${C.roseGoldLight}`}}>
+                        {item.caption&&<div className="prop-img-cap-title" style={{fontSize:17,fontWeight:700,color:C.burgundy,lineHeight:1.3}}>{item.caption}</div>}
+                        {item.note&&<div className="prop-img-cap-note" style={{fontSize:14,color:"#4a2a1a",marginTop:4,lineHeight:1.6}}>{item.note}</div>}
                       </div>
                     )}
                   </div>
@@ -235,19 +275,19 @@ export default function DBREventStudio() {
 
         {/* Notes */}
         {prop.notes&&(
-          <div style={{maxWidth:720,margin:"28px auto 0",padding:"0 32px"}}>
-            <div style={{background:`${C.burgundy}10`,border:`1px solid ${C.roseGoldLight}`,borderLeft:`4px solid ${C.burgundy}`,borderRadius:10,padding:"18px 20px"}}>
-              <div style={{fontSize:12,color:C.burgundy,letterSpacing:2,textTransform:"uppercase",fontFamily:"'Lato',sans-serif",fontWeight:700,marginBottom:8}}>Important Notes</div>
-              <p style={{fontSize:16,lineHeight:1.85,color:C.text}}>{prop.notes}</p>
+          <div className="prop-notes" style={{maxWidth:720,margin:"28px auto 0",padding:"0 32px"}}>
+            <div className="prop-notes-box" style={{background:`${C.burgundy}10`,border:`1px solid ${C.roseGoldLight}`,borderLeft:`4px solid ${C.burgundy}`,borderRadius:10,padding:"18px 20px"}}>
+              <div className="prop-notes-label" style={{fontSize:12,color:C.burgundy,letterSpacing:0.5,textTransform:"uppercase",fontFamily:"'Lato',sans-serif",fontWeight:700,marginBottom:8}}>Important Notes</div>
+              <p className="prop-notes-text" style={{fontSize:16,lineHeight:1.85,color:"#1a0a0e"}}>{prop.notes}</p>
             </div>
           </div>
         )}
 
         {/* Footer */}
-        <div style={{textAlign:"center",padding:"36px 40px 32px",marginTop:32,borderTop:`1px solid ${C.border}`}}>
+        <div className="prop-footer" style={{textAlign:"center",padding:"36px 40px 32px",marginTop:32,borderTop:`1px solid ${C.border}`}}>
           <img src={`data:image/jpeg;base64,${LOGO_B64}`} alt="DBR" style={{width:52,height:52,borderRadius:8,objectFit:"cover",marginBottom:12}}/>
-          <div style={{fontSize:19,fontStyle:"italic",color:C.burgundy,marginBottom:6}}>"We create elevated, unforgettable experiences for your most special moments."</div>
-          <div style={{fontSize:12,color:C.muted,letterSpacing:2,textTransform:"uppercase",fontFamily:"'Lato',sans-serif",lineHeight:2.2}}>
+          <div className="prop-footer-quote" style={{fontSize:19,fontStyle:"italic",color:C.burgundy,marginBottom:6}}>"We create elevated, unforgettable experiences for your most special moments."</div>
+          <div className="prop-footer-contact" style={{fontSize:13,color:"#4a2a1a",letterSpacing:0.5,textTransform:"uppercase",fontFamily:"'Lato',sans-serif",lineHeight:2.2}}>
             designbyriahdbr@gmail.com &nbsp;|&nbsp; +1 (469) 728-9693 &nbsp;|&nbsp; designbyriaheventstylist.carrd.co
           </div>
         </div>
